@@ -7,6 +7,10 @@ export default function Login() {
   const [sent, setSent] = useState(false);
 
   async function handleLogin() {
+    if (!supabase) {
+      console.error('Supabase client not initialized');
+      return;
+    }
     await supabase.auth.signInWithOtp({ email });
     setSent(true);
   }
