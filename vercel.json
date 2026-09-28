@@ -1,6 +1,3 @@
 {
-  "buildCommand": "cd matcha-app && npm run build",
-  "outputDirectory": "matcha-app/.next",
-  "installCommand": "cd matcha-app && npm install",
-  "framework": "nextjs"
+  "rootDirectory": "matcha-app"
 }
