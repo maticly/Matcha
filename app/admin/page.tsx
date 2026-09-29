@@ -20,6 +20,10 @@ export default function Admin() {
   const [amazonUrl, setAmazonUrl] = useState('');
 
   async function search() {
+    if (!process.env.NEXT_PUBLIC_GEOAPIFY_KEY) {
+      console.error('GEOAPIFY_KEY is not set');
+      return;
+    }
     const res = await fetch(
       `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&apiKey=${process.env.NEXT_PUBLIC_GEOAPIFY_KEY}`
     );
@@ -44,8 +48,11 @@ export default function Admin() {
       .select()
       .single();
 
-    if (error) console.error(error);
-    else setSelectedPlace(data);
+    if (error) {
+      console.error('Error saving place:', error);
+    } else {
+      setSelectedPlace(data);
+    }
   }
 
   async function saveManualPlace() {
@@ -84,7 +91,10 @@ export default function Admin() {
     .select()
     .single();
 
-    if (error || !product) return console.error(error);
+    if (error || !product) {
+      console.error('Error saving product:', error, 'Product:', product);
+      return;
+    }
 
     if (selectedPlace) {
       await supabase.from('product_places').insert({
